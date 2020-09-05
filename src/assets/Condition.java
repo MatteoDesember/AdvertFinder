@@ -21,7 +21,7 @@ public class Condition {
     private String locationNoFilter = "BIAŁOŁĘKA, TARGÓWEK, PRAGA, URSUS, REMBERTÓW, TARCHOMIN, WOLA, BEMOWO, WŁOCHY, BRÓDNO, VERDIEGO, WILANÓW";
     private String locationYesFilter = null;
 
-    public static void readFromFile() {
+    static {
         try {
             conditionList = new Gson().fromJson(new JsonReader(new FileReader(FILENAME)), new TypeToken<List<Condition>>() {
             }.getType());

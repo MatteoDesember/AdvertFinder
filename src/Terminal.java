@@ -1,4 +1,3 @@
-import assets.Advert;
 import assets.Condition;
 import pages.Gumtree;
 import pages.Page;
@@ -54,28 +53,14 @@ class Terminal implements Runnable {
             } else if (Objects.equals(command, "gc")) {
                 System.gc();
             } else if (Objects.equals(command, "t")) {
-
-                /***
-                 * Here is a place where you can test app
-                 */
-//                try {
-//                    MailHandler mailHandler = new MailHandler();
-//                    mailHandler.sendMail(new Mail("asd", "Subject", "msg"));
-//                } catch (MessagingException e) {
-//                    e.printStackTrace();
-//                }
-
+                //Here is a place where you can test app
                 Page gumtreePage = new Gumtree();
                 gumtreePage.getAdverts();
-//                gumtreePage.getAdvertDetails(gumtreePage.advertList.get(0));
-
-                Condition.readFromFile();
 
                 for (Condition condition : Condition.conditionList) {
-                    List<Advert> advertsWchichFullFillCondition = gumtreePage.checkCondition(condition);
-                    System.out.println(advertsWchichFullFillCondition);
+                    gumtreePage.checkCondition(condition);
+                    System.out.println();
                 }
-
             } else {
                 System.out.println("Incorrect command");
             }

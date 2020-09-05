@@ -40,7 +40,8 @@ public class Gumtree extends Page {
         for (Element detail : details) {
             if (detail.select("span.name").text().equals("Wielkość (m2)")) {
                 advert.setArea(detail.select("span.value").text());
-                advert.setPricePerMeter(advert.getPrice() / advert.getArea());
+                if (advert.getPrice() != null)
+                    advert.setPricePerMeter(advert.getPrice() / advert.getArea());
             }
         }
 

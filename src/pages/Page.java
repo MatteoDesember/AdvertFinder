@@ -17,7 +17,7 @@ public abstract class Page {
     private Integer pageIterator = 1;
     private static final Integer ENDPAGE = 1;//TODO:
 
-    public List<Advert> advertList = new ArrayList<>();
+    List<Advert> advertList = new ArrayList<>();
 
     public abstract void getAdverts();
 
@@ -54,12 +54,12 @@ public abstract class Page {
         return document;
     }
 
-    private boolean valueExists(Advert advert, Object test) {
-        if (test == null && !advert.getGotDetails()) {
-            getAdvertDetails(advert);
-            return valueExists(advert, test);
-        } else return test != null;
-    }
+//    private boolean valueExists(Advert advert, Object value) {
+//        if (value == null && !advert.getGotDetails()) {
+//            getAdvertDetails(advert);
+//            return valueExists(advert, value);
+//        } else return value != null;
+//    }
 
     public List<Advert> checkCondition(Condition condition) {
 
@@ -69,19 +69,47 @@ public abstract class Page {
 
             boolean isFulFilled = true;
 
-            if (condition.getPriceFilter() != null && valueExists(advert, advert.getPrice()))
-                isFulFilled = condition.getPriceFilter() >= advert.getPrice();
-            if (condition.getAreaFilter() != null && valueExists(advert, advert.getArea()))
-                isFulFilled = isFulFilled && condition.getAreaFilter() <= advert.getArea();
-            if (condition.getLocationNoFilter() != null && valueExists(advert, advert.getLocation()))
-                    isFulFilled = isFulFilled && Condition.stringInStrings(advert.getLocation(), condition.getLocationNoFilter());
-            if (condition.getLocationYesFilter() != null && valueExists(advert, advert.getLocation()))
-                    isFulFilled = isFulFilled && !Condition.stringInStrings(advert.getLocation(), condition.getLocationYesFilter());
+            if (condition.getPriceFilter() != null) {
+                if (advert.getPrice() == null && !advert.getGotDetails()) {
+                    getAdvertDetails(advert);
+                }
+                if (advert.getPrice() == null && advert.getGotDetails())
+                    System.out.println("There is no value");
+                else
+                    isFulFilled = condition.getPriceFilter() >= advert.getPrice();
+            }
 
+            if (isFulFilled && condition.getAreaFilter() != null) {
+                if (advert.getArea() == null && !advert.getGotDetails()) {
+                    getAdvertDetails(advert);
+                }
+                if (advert.getArea() == null && advert.getGotDetails())
+                    System.out.println("There is no value");
+                else
+                    isFulFilled = condition.getAreaFilter() <= advert.getArea();
+            }
+
+            if (isFulFilled && condition.getLocationNoFilter() != null) {
+                if (advert.getLocation() == null && !advert.getGotDetails()) {
+                    getAdvertDetails(advert);
+                }
+                if (advert.getLocation() == null && advert.getGotDetails())
+                    System.out.println("There is no value");
+                else
+                    isFulFilled = Condition.stringInStrings(advert.getLocation(), condition.getLocationNoFilter());
+            }
+            if (isFulFilled && condition.getLocationYesFilter() != null) {
+                if (advert.getLocation() == null && !advert.getGotDetails()) {
+                    getAdvertDetails(advert);
+                }
+                if (advert.getLocation() == null && advert.getGotDetails())
+                    System.out.println("There is no value");
+                else
+                    isFulFilled = !Condition.stringInStrings(advert.getLocation(), condition.getLocationYesFilter());
+            }
             if (isFulFilled)
                 advertsCondition.add(advert);
         }
         return advertsCondition;
-
     }
 }
